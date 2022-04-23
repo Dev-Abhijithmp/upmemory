@@ -1,16 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_sound/flutter_sound.dart';
-import 'package:flutter_sound/public/tau.dart';
-class Memoryprovider extends ChangeNotifier {
-  Memoryprovider(){
-   var player=  FlutterSoundPlayer();
-  }
-   Future pausesound()async{
-     
-    
-    
-    
-  }
+import 'package:upmemory/models/datacontrollers.dart';
 
-  
+class Memoryprovider extends ChangeNotifier {
+  Memoryprovider(this.data) {}
+  Future pausesound() async {}
+  final List<Memorydata>? data;
+
+  bool _recording = false;
+  bool get recording => _recording;
+  bool _isPlaying = false;
+  bool get isPlaying => _isPlaying;
 }

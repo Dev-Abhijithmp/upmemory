@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:upmemory/color/colors.dart';
+import 'package:upmemory/color/theme.dart';
 import 'package:upmemory/screens/widgets.dart';
 
 class Homepage extends StatelessWidget {
@@ -10,17 +11,21 @@ class Homepage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color.fromRGBO(255, 221, 238, 0),
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            gradient: ColorsS.primaryGradient,
+          ),
+        ),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+              bottomLeft: Radius.elliptical(150, 7),
+              bottomRight: Radius.elliptical(150, 7)),
+        ),
         title: Text(
-          "Upmemory",
+          "Memories",
           style: TextStyle(color: foregroundColor),
         ),
-        actions: [
-          Text(
-            "17/02/2022",
-            style: TextStyle(color: foregroundColor),
-          )
-        ],
+        actions: [],
       ),
       drawerScrimColor: Colors.yellow,
       backgroundColor: Colors.white,

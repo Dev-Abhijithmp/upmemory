@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "337644565634",
+    "project_id": "upmemory-4be09",
+    "storage_bucket": "upmemory-4be09.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:337644565634:android:89516cecf3ea975b96b09b",
+        "android_client_info": {
+          "package_name": "com.example.upmemory"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "337644565634-inc843rnr41hsf45d7bs9616nm1nc4k2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAQgUekD2X2MYYRQzXXkx6vsWI4DR0Oq3g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "337644565634-inc843rnr41hsf45d7bs9616nm1nc4k2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

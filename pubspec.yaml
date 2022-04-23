@@ -37,10 +37,14 @@ dependencies:
   get: ^4.6.1
   provider: ^6.0.2
   shared_preferences: ^2.0.13
-  flutter_sound: ^9.1.3
-  social_media_recorder: ^0.1.61
   permission_handler: ^8.3.0
   flutter_neumorphic: ^3.2.0
+  firebase_core: ^1.14.1
+  firebase_storage: ^10.2.12
+  firebase_auth: ^3.3.14
+  cloud_firestore: ^3.1.12
+  flutter_sound: ^9.2.2
+  font_awesome_flutter: ^10.1.0
 
 dev_dependencies:
   flutter_test:
@@ -63,6 +67,20 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
+  assets:
+      - assets/img/login_logo.png
+  fonts:
+    - family: WorkSansSemiBold
+      fonts:
+        - asset: assets/fonts/Work_Sans/WorkSans-SemiBold.ttf
+
+    - family: WorkSansBold
+      fonts:
+        - asset: assets/fonts/Work_Sans/WorkSans-Bold.ttf
+
+    - family: WorkSansMedium
+      fonts:
+        - asset: assets/fonts/Work_Sans/WorkSans-Medium.ttf
 
   # To add assets to your application, add an assets section, like this:
   # assets:
