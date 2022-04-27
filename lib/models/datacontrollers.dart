@@ -1,16 +1,14 @@
 class Memorydata {
-    List<String>? memorytext;
-    List<String>? memoryImageUrls;
-    List<String>? memoryVoiceurls;
-    DateTime? memoryDate;
+  int? updateCount;
+  List<String>? memorytext;
+  List<String>? memoryImageUrls;
+  List<String>? memoryVoiceurls;
+  DateTime? memoryDate;
   Memorydata({
-    this.memoryDate,
+    required this.updateCount,
+    required this.memoryDate,
     this.memoryImageUrls,
     this.memoryVoiceurls,
     this.memorytext,
-
-
   });
-
-  
 }

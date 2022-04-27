@@ -1,5 +1,8 @@
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
-import 'package:upmemory/color/theme.dart';
+import 'package:get/route_manager.dart';
+import 'package:upmemory/screens/viewMemory.dart';
+import 'package:upmemory/themeColorIcons/theme.dart';
+
 //this is single home page ui item
 
 class MemoryItem extends StatelessWidget {
@@ -50,6 +53,8 @@ class MemoryItem extends StatelessWidget {
                   child: Text("Remove"),
                 ),
                 NeumorphicButton(
+                  onPressed: () => Navigator.push(
+                      context, MaterialPageRoute(builder: (_) => ViewMemory())),
                   child: Text("View"),
                 ),
               ],
@@ -89,4 +94,51 @@ Widget _singleNotesItem() {
       Text("4"),
     ],
   );
+}
+
+AlertDialog alertDialog(BuildContext context) {
+  return AlertDialog(
+    content: Container(
+      height: 200,
+      child: Column(
+        children: [
+          Text("you added 5 images"),
+          Text(" added 7 voices"),
+          Text("Added 2 notes"),
+        ],
+      ),
+    ),
+    actions: [
+      ElevatedButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          child: Text("cancel")),
+      ElevatedButton(
+        onPressed: () {},
+        child: Text("upload"),
+      )
+    ],
+  );
+}
+
+void errorAlert(
+    {required String error,
+    required String title,
+    required BuildContext context}) {
+  showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(title),
+          content: Text(error.toLowerCase()),
+          actions: [
+            ElevatedButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text("cancel")),
+          ],
+        );
+      });
 }

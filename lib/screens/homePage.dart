@@ -1,8 +1,12 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
-import 'package:upmemory/color/colors.dart';
-import 'package:upmemory/color/theme.dart';
+import 'package:upmemory/screens/addmemory/addMemNavbar.dart';
+import 'package:upmemory/screens/drawer.dart';
 import 'package:upmemory/screens/widgets.dart';
+import 'package:upmemory/themeColorIcons/colors.dart';
+import 'package:upmemory/themeColorIcons/theme.dart';
 
 class Homepage extends StatelessWidget {
   const Homepage({Key? key}) : super(key: key);
@@ -27,7 +31,7 @@ class Homepage extends StatelessWidget {
         ),
         actions: [],
       ),
-      drawerScrimColor: Colors.yellow,
+      drawer: drawer(),
       backgroundColor: Colors.white,
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -35,6 +39,20 @@ class Homepage extends StatelessWidget {
           MemoryItem(),
           MemoryItem(),
         ],
+      ),
+      floatingActionButton: NeumorphicFloatingActionButton(
+        style: NeumorphicStyle(color: endClr),
+        onPressed: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (_) => MemNavBar(buttonText: "upload")));
+        },
+        child: Center(
+            child: Text(
+          "new",
+          style: TextStyle(color: Colors.white),
+        )),
       ),
     );
   }

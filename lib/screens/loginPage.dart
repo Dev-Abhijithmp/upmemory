@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:upmemory/color/theme.dart';
+import 'package:upmemory/authentication/authenticate.dart';
+import 'package:upmemory/screens/widgets.dart';
+import 'package:upmemory/themeColorIcons/theme.dart';
 import 'package:upmemory/utils/bubble_indication_painter.dart';
 
 class LoginPage extends StatefulWidget {
@@ -325,7 +327,18 @@ class _LoginPageState extends State<LoginPage>
                       ),
                     ),
                   ),
-                  onTap: () => showInSnackBar("Login button pressed"),
+                  onTap: () async {
+                    if (loginEmailController.text == "" ||
+                        loginPasswordController == "") {
+                      errorAlert(
+                          error: "Enter email and password",
+                          title: "Error",
+                          context: context);
+                    } else {
+                      signinemail(loginEmailController.text.trim(),
+                          loginPasswordController.text);
+                    }
+                  },
                 ),
               ),
             ],
@@ -626,7 +639,28 @@ class _LoginPageState extends State<LoginPage>
                             fontFamily: "WorkSansBold"),
                       ),
                     ),
-                    onTap: () => showInSnackBar("SignUp button pressed")),
+                    onTap: () async {
+                      if (signupPasswordController.text !=
+                          signupConfirmPasswordController.text) {
+                        errorAlert(
+                            error: "password didn't match",
+                            title: "Error!",
+                            context: context);
+                      } else if (signupConfirmPasswordController.text != " " &&
+                          signupConfirmPasswordController.text != "" &&
+                          signupNameController.text != "" &&
+                          signupEmailController.text != "") {
+                        await register(
+                            email: signupEmailController.text.trim(),
+                            password: signupConfirmPasswordController.text,
+                            name: signupNameController.text);
+                      } else {
+                        errorAlert(
+                            error: "please fill all the fields",
+                            title: "Error !",
+                            context: context);
+                      }
+                    }),
               ),
             ],
           ),
