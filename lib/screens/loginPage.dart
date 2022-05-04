@@ -218,133 +218,125 @@ class _LoginPageState extends State<LoginPage>
       padding: EdgeInsets.only(top: 23.0),
       child: Column(
         children: <Widget>[
-          Stack(
-            alignment: Alignment.topCenter,
-            overflow: Overflow.visible,
-            children: <Widget>[
-              Container(
-                width: 300.0,
-                height: 190.0,
-                child: Column(
-                  children: <Widget>[
-                    Container(
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(26),
-                          border: Border.all(color: Colors.white)),
-                      padding:
-                          EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                      child: TextField(
-                        focusNode: myFocusNodeEmailLogin,
-                        controller: loginEmailController,
-                        keyboardType: TextInputType.emailAddress,
-                        style: TextStyle(
-                            fontFamily: "WorkSansSemiBold",
-                            fontSize: 16.0,
-                            color: Colors.black),
-                        decoration: InputDecoration(
-                          border: InputBorder.none,
-                          icon: Icon(
-                            FontAwesomeIcons.envelope,
-                            color: Colors.black,
-                            size: 22.0,
-                          ),
-                          hintText: "Email Address",
-                          hintStyle: TextStyle(
-                              fontFamily: "WorkSansSemiBold", fontSize: 17.0),
-                        ),
+          Container(
+            width: 300.0,
+            height: 210.0,
+            child: Column(
+              children: <Widget>[
+                Container(
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(26),
+                      border: Border.all(color: Colors.white)),
+                  padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                  child: TextField(
+                    focusNode: myFocusNodeEmailLogin,
+                    controller: loginEmailController,
+                    keyboardType: TextInputType.emailAddress,
+                    style: TextStyle(
+                        fontFamily: "WorkSansSemiBold",
+                        fontSize: 16.0,
+                        color: Colors.black),
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                      icon: Icon(
+                        FontAwesomeIcons.envelope,
+                        color: Colors.black,
+                        size: 22.0,
                       ),
+                      hintText: "Email Address",
+                      hintStyle: TextStyle(
+                          fontFamily: "WorkSansSemiBold", fontSize: 17.0),
                     ),
-                    SizedBox(
-                      height: 15,
-                    ),
-                    Container(
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(26),
-                          border: Border.all(color: Colors.white)),
-                      padding:
-                          EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                      child: TextField(
-                        focusNode: myFocusNodePasswordLogin,
-                        controller: loginPasswordController,
-                        obscureText: _obscureTextLogin,
-                        style: TextStyle(
-                            fontFamily: "WorkSansSemiBold",
-                            fontSize: 16.0,
-                            color: Colors.black),
-                        decoration: InputDecoration(
-                          border: InputBorder.none,
-                          icon: Icon(
-                            FontAwesomeIcons.lock,
-                            size: 22.0,
-                            color: Colors.black,
-                          ),
-                          hintText: "Password",
-                          hintStyle: TextStyle(
-                              fontFamily: "WorkSansSemiBold", fontSize: 17.0),
-                          suffixIcon: GestureDetector(
-                            onTap: _toggleLogin,
-                            child: Icon(
-                              _obscureTextLogin
-                                  ? FontAwesomeIcons.eye
-                                  : FontAwesomeIcons.eyeSlash,
-                              size: 15.0,
-                              color: Colors.black,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
-              ),
-              Container(
-                margin: EdgeInsets.only(top: 170),
-                child: InkWell(
-                  splashColor: ColorsS.loginGradientEnd,
-                  highlightColor: Colors.transparent,
-                  child: Container(
-                    width: 200,
-                    height: 40,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(30),
-                      gradient: new LinearGradient(
-                          colors: [
-                            ColorsS.loginGradientEnd,
-                            ColorsS.loginGradientStart
-                          ],
-                          begin: const FractionalOffset(0.2, 0.2),
-                          end: const FractionalOffset(1.0, 1.0),
-                          stops: [0.0, 1.0],
-                          tileMode: TileMode.clamp),
-                    ),
-                    child: Center(
-                      child: Text(
-                        "LOGIN",
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 25.0,
-                            fontFamily: "WorkSansBold"),
+                SizedBox(
+                  height: 25,
+                ),
+                Container(
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(26),
+                      border: Border.all(color: Colors.white)),
+                  padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                  child: TextField(
+                    focusNode: myFocusNodePasswordLogin,
+                    controller: loginPasswordController,
+                    obscureText: _obscureTextLogin,
+                    style: TextStyle(
+                        fontFamily: "WorkSansSemiBold",
+                        fontSize: 16.0,
+                        color: Colors.black),
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                      icon: Icon(
+                        FontAwesomeIcons.lock,
+                        size: 22.0,
+                        color: Colors.black,
+                      ),
+                      hintText: "Password",
+                      hintStyle: TextStyle(
+                          fontFamily: "WorkSansSemiBold", fontSize: 17.0),
+                      suffixIcon: GestureDetector(
+                        onTap: _toggleLogin,
+                        child: Icon(
+                          _obscureTextLogin
+                              ? FontAwesomeIcons.eye
+                              : FontAwesomeIcons.eyeSlash,
+                          size: 15.0,
+                          color: Colors.black,
+                        ),
                       ),
                     ),
                   ),
-                  onTap: () async {
-                    if (loginEmailController.text == "" ||
-                        loginPasswordController == "") {
-                      errorAlert(
-                          error: "Enter email and password",
-                          title: "Error",
-                          context: context);
-                    } else {
-                      signinemail(loginEmailController.text.trim(),
-                          loginPasswordController.text);
-                    }
-                  },
+                ),
+              ],
+            ),
+          ),
+          InkWell(
+            splashColor: Colors.white,
+            highlightColor: Colors.transparent,
+            onTap: () async {
+              if (loginEmailController.text == "" ||
+                  loginPasswordController == "") {
+                errorAlert(
+                    error: "Enter email and password",
+                    title: "Error",
+                    context: context);
+              } else {
+                signinemail(loginEmailController.text.trim(),
+                    loginPasswordController.text);
+              }
+            },
+            child: Container(
+              margin: EdgeInsets.only(top: 50),
+              child: Container(
+                width: 200,
+                height: 40,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(30),
+                  gradient: new LinearGradient(
+                      colors: [
+                        ColorsS.loginGradientEnd,
+                        ColorsS.loginGradientStart
+                      ],
+                      begin: const FractionalOffset(0.2, 0.2),
+                      end: const FractionalOffset(1.0, 1.0),
+                      stops: [0.0, 1.0],
+                      tileMode: TileMode.clamp),
+                ),
+                child: Center(
+                  child: Text(
+                    "LOGIN",
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 25.0,
+                        fontFamily: "WorkSansBold"),
+                  ),
                 ),
               ),
-            ],
+            ),
           ),
           Padding(
-            padding: EdgeInsets.only(top: 10.0),
+            padding: EdgeInsets.only(top: 30.0),
             child: FlatButton(
                 onPressed: () {},
                 child: Text(
@@ -355,93 +347,6 @@ class _LoginPageState extends State<LoginPage>
                       fontSize: 16.0,
                       fontFamily: "WorkSansMedium"),
                 )),
-          ),
-          Padding(
-            padding: EdgeInsets.only(top: 10.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Container(
-                  decoration: BoxDecoration(
-                    gradient: new LinearGradient(
-                        colors: [
-                          Colors.white10,
-                          Colors.white,
-                        ],
-                        begin: const FractionalOffset(0.0, 0.0),
-                        end: const FractionalOffset(1.0, 1.0),
-                        stops: [0.0, 1.0],
-                        tileMode: TileMode.clamp),
-                  ),
-                  width: 100.0,
-                  height: 1.0,
-                ),
-                Padding(
-                  padding: EdgeInsets.only(left: 15.0, right: 15.0),
-                  child: Text(
-                    "Or",
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 16.0,
-                        fontFamily: "WorkSansMedium"),
-                  ),
-                ),
-                Container(
-                  decoration: BoxDecoration(
-                    gradient: new LinearGradient(
-                        colors: [
-                          Colors.white,
-                          Colors.white10,
-                        ],
-                        begin: const FractionalOffset(0.0, 0.0),
-                        end: const FractionalOffset(1.0, 1.0),
-                        stops: [0.0, 1.0],
-                        tileMode: TileMode.clamp),
-                  ),
-                  width: 100.0,
-                  height: 1.0,
-                ),
-              ],
-            ),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Padding(
-                padding: EdgeInsets.only(top: 10.0, right: 40.0),
-                child: GestureDetector(
-                  onTap: () => showInSnackBar("Facebook button pressed"),
-                  child: Container(
-                    padding: const EdgeInsets.all(15.0),
-                    decoration: new BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Colors.white,
-                    ),
-                    child: new Icon(
-                      FontAwesomeIcons.facebookF,
-                      color: Color(0xFF0084ff),
-                    ),
-                  ),
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.only(top: 10.0),
-                child: GestureDetector(
-                  onTap: () => showInSnackBar("Google button pressed"),
-                  child: Container(
-                    padding: const EdgeInsets.all(15.0),
-                    decoration: new BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Colors.white,
-                    ),
-                    child: new Icon(
-                      FontAwesomeIcons.google,
-                      color: Color(0xFF0084ff),
-                    ),
-                  ),
-                ),
-              ),
-            ],
           ),
         ],
       ),

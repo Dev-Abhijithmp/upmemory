@@ -1,7 +1,8 @@
-import 'dart:ui';
-
-import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
+import 'package:upmemory/functions/checkExistance.dart';
+import 'package:upmemory/screens/Loadingpage.dart';
 import 'package:upmemory/screens/addmemory/addMemNavbar.dart';
 import 'package:upmemory/screens/drawer.dart';
 import 'package:upmemory/screens/widgets.dart';
@@ -13,6 +14,8 @@ class Homepage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print("user id: ${FirebaseAuth.instance.currentUser!.uid}");
+
     return Scaffold(
       appBar: AppBar(
         flexibleSpace: Container(
@@ -33,20 +36,50 @@ class Homepage extends StatelessWidget {
       ),
       drawer: drawer(),
       backgroundColor: Colors.white,
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          MemoryItem(),
-          MemoryItem(),
-        ],
-      ),
+      body: StreamBuilder(
+          stream: FirebaseFirestore.instance
+              .collection("memories")
+              .doc('memories')
+              .collection(FirebaseAuth.instance.currentUser!.uid.toString())
+              .snapshots(),
+          builder:
+              (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+            if (snapshot.hasError) {
+              return Text('Error: ${snapshot.error}');
+            } else if (snapshot.hasData) {
+              List<DocumentSnapshot>? docs = snapshot.data?.docs;
+              return ListView.builder(
+                itemCount: docs?.length ?? 0,
+                itemBuilder: (BuildContext context, int index) {
+                  return MemoryItem(
+                    doc: docs![index],
+                  );
+                },
+              );
+            } else {
+              return LoadingPage();
+            }
+          }),
       floatingActionButton: NeumorphicFloatingActionButton(
         style: NeumorphicStyle(color: endClr),
-        onPressed: () {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (_) => MemNavBar(buttonText: "upload")));
+        onPressed: () async {
+          if (await isDocexist(FirebaseAuth.instance.currentUser!.uid) ==
+              true) {
+            errorAlert(
+                error:
+                    "You Cant create new memory today the file already exist!. remove memory to add new memory or update memory",
+                title: "error!",
+                context: context);
+          } else {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (_) => MemNavBar(
+                        buttonText: 'upload',
+                        memorytext: [],
+                        images: [],
+                        audios: [])));
+          }
         },
         child: Center(
             child: Text(

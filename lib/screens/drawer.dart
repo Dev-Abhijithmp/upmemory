@@ -5,8 +5,13 @@ import 'package:upmemory/themeColorIcons/theme.dart';
 Drawer drawer() => Drawer(
       child: ListView(
         children: [
+          profile(),
           SizedBox(
-            height: 70,
+            height: 40,
+          ),
+          changePassword(),
+          SizedBox(
+            height: 20,
           ),
           signoutButton(),
         ],
@@ -18,7 +23,7 @@ Widget signoutButton() {
       signout();
     },
     child: Container(
-      width: 200,
+      margin: EdgeInsets.all(10),
       height: 40,
       decoration: BoxDecoration(
         color: ColorsS.loginGradientEnd,
@@ -28,5 +33,39 @@ Widget signoutButton() {
         child: Text("Sign out"),
       ),
     ),
+  );
+}
+
+Widget changePassword() {
+  return InkWell(
+    onTap: () {},
+    child: Container(
+      margin: EdgeInsets.all(10),
+      height: 40,
+      decoration: BoxDecoration(
+        color: ColorsS.loginGradientEnd,
+        borderRadius: BorderRadius.circular(5),
+      ),
+      child: Center(
+        child: Text("Change password"),
+      ),
+    ),
+  );
+}
+
+Widget profile() {
+  return Column(
+    children: [
+      SizedBox(
+        height: 20,
+      ),
+      CircleAvatar(
+        radius: 40,
+      ),
+      SizedBox(
+        height: 10,
+      ),
+      Text("User Name"),
+    ],
   );
 }

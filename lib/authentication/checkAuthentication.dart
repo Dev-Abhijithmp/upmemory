@@ -9,9 +9,9 @@ class CheckAuthentication extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-      stream: FirebaseAuth.instance.userChanges(),
+      stream: FirebaseAuth.instance.authStateChanges(),
       builder: (BuildContext context, AsyncSnapshot<User?> snapshot) {
-        if (snapshot.data?.uid != null) {
+        if (snapshot.hasData) {
           return Homepage();
         } else {
           return LoginPage();

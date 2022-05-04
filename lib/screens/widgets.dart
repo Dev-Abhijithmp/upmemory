@@ -1,12 +1,21 @@
+import 'dart:io';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:date_format/date_format.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
-import 'package:get/route_manager.dart';
+import 'package:provider/provider.dart';
+import 'package:upmemory/functions/removememory.dart';
+import 'package:upmemory/functions/uploadData.dart';
+import 'package:upmemory/screens/addmemory/addMemNavbar.dart';
+import 'package:upmemory/screens/addmemory/textandImageProvider.dart';
 import 'package:upmemory/screens/viewMemory.dart';
 import 'package:upmemory/themeColorIcons/theme.dart';
 
 //this is single home page ui item
-
 class MemoryItem extends StatelessWidget {
-  const MemoryItem({Key? key}) : super(key: key);
+  final DocumentSnapshot? doc;
+  const MemoryItem({Key? key, required this.doc}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -33,28 +42,50 @@ class MemoryItem extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 Text(
-                  "14/04/2022",
+                  doc!.id,
                   style: TextStyle(
                     color: ColorsS.loginGradientEnd,
                   ),
                 ),
-                _singleImageItem(),
-                _singleNotesItem(),
-                _singleAudioItem(),
+                _singleImageItem(
+                    imageCount: doc?.get('memoryImages')?.length ?? 0),
+                _singleNotesItem(
+                    notesCount: doc?.get('memoryText')?.length ?? 0),
+                _singleAudioItem(
+                    voicecount: doc?.get('memoryVoice')?.length ?? 0),
               ],
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 NeumorphicButton(
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (_) => MemNavBar(
+                                buttonText: "update",
+                                images: doc?.get('memoryImages'),
+                                audios: doc?.get('memoryVoice'),
+                                memorytext: doc?.get('memoryText'))));
+                  },
                   child: Text("Update"),
                 ),
                 NeumorphicButton(
+                  onPressed: () async {
+                    var flag = await removememory(
+                        FirebaseAuth.instance.currentUser!.uid, doc!.id);
+                    print(flag);
+                  },
                   child: Text("Remove"),
                 ),
                 NeumorphicButton(
                   onPressed: () => Navigator.push(
-                      context, MaterialPageRoute(builder: (_) => ViewMemory())),
+                      context,
+                      MaterialPageRoute(
+                          builder: (_) => ViewMemory(
+                                doc: doc!,
+                              ))),
                   child: Text("View"),
                 ),
               ],
@@ -66,45 +97,48 @@ class MemoryItem extends StatelessWidget {
   }
 }
 
-Widget _singleImageItem() {
+Widget _singleImageItem({required int imageCount}) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
     children: [
       Icon(Icons.image),
-      Text("5"),
+      Text(imageCount.toString()),
     ],
   );
 }
 
-Widget _singleAudioItem() {
+Widget _singleAudioItem({required int voicecount}) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
     children: [
       Icon(Icons.audio_file),
-      Text("6"),
+      Text(voicecount.toString()),
     ],
   );
 }
 
-Widget _singleNotesItem() {
+Widget _singleNotesItem({required int notesCount}) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
     children: [
       Icon(Icons.text_fields),
-      Text("4"),
+      Text(notesCount.toString()),
     ],
   );
 }
 
-AlertDialog alertDialog(BuildContext context) {
+AlertDialog alertDialog(BuildContext context, List<File> image,
+    List<File> voice, List<String> text) {
   return AlertDialog(
     content: Container(
-      height: 200,
+      height: 150,
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          Text("you added 5 images"),
-          Text(" added 7 voices"),
-          Text("Added 2 notes"),
+          Text(" Added ${image.length} images"),
+          Text(" Added ${voice.length} voices"),
+          Text("Added ${text.length} notes"),
+          Text("do you want upload this memory"),
         ],
       ),
     ),
@@ -114,9 +148,22 @@ AlertDialog alertDialog(BuildContext context) {
             Navigator.pop(context);
           },
           child: Text("cancel")),
-      ElevatedButton(
-        onPressed: () {},
-        child: Text("upload"),
+      Consumer<TextAndImageProvider>(
+        builder: (context, value, child) {
+          return ElevatedButton(
+            onPressed: () async {
+              value.changeLoading();
+              await uploadMemory(
+                  FirebaseAuth.instance.currentUser!.uid,
+                  formatDate(DateTime.now(), [dd, '-', mm, '-', yyyy]),
+                  text,
+                  image,
+                  voice,
+                  context);
+            },
+            child: Text("upload"),
+          );
+        },
       )
     ],
   );

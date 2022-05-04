@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 //it's  function for deleteing firebase document when user trigger remove buttton ande check the time is expired
 //if not it will delete document
@@ -9,21 +8,25 @@ Future<Map<String, String>> removememory(String uid, String docid) async {
     DocumentSnapshot<Map<String, dynamic>> data = await FirebaseFirestore
         .instance
         .collection('memories')
-        .doc(uid)
-        .collection('memories')
+        .doc('memories')
+        .collection(uid)
         .doc(docid)
         .get();
-    DateTime _docdate = data['date'];
-    var difference = _datetime.difference(_docdate);
+    var _docdate = data['memoryDate'] as Timestamp;
+    var _docdate2 = _docdate.toDate();
+
+    var difference = _datetime.difference(_docdate2);
+    print("difference: $difference");
     if (difference > Duration(days: 1)) {
       return {'status': "can't delete after 24 hours"};
     } else {
       await FirebaseFirestore.instance
           .collection('memories')
-          .doc(uid)
-          .collection('memories')
+          .doc('memories')
+          .collection(uid)
           .doc(docid)
           .delete();
+      print('removed memory');
       return {'status': 'success'};
     }
   } on FirebaseException catch (e) {

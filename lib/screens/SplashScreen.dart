@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:upmemory/themeColorIcons/theme.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -38,7 +37,7 @@ class _SplashScreenState extends State<SplashScreen> {
         child: Center(
             child: Text(
           "UPMEMORY",
-          style: TextStyle(fontSize: 20),
+          style: TextStyle(fontSize: 22, color: Colors.white,fontWeight: FontWeight.bold),
         )),
       ),
     );
