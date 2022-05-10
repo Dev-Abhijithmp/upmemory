@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:date_format/date_format.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:provider/provider.dart';
 import 'package:upmemory/screens/addmemory/textandImageProvider.dart';
 
@@ -45,13 +46,18 @@ Future<Map<String, String>> updatememory(
       'memoryVoice': voiceurlss + vdata['status']!,
       'memoryImages': imageurlss + data['status']!,
       'memoryDateupdated': formatDate(DateTime.now(),
-          [dd, '-', mm, '-', yyyy, '- time', hh, ':', nn, ':', ss]),
+          [dd, '-', mm, '-', yyyy, '  ', hh, ':', nn, ':', ss, ':', am]),
       'isUpdated': true,
     });
+
     Provider.of<TextAndImageProvider>(context, listen: false).changeLoading();
     Provider.of<TextAndImageProvider>(context, listen: false)
         .textEditingController
         .clear();
+    print(
+      formatDate(DateTime.now(),
+          [dd, '-', mm, '-', yyyy, '  ', hh, ':', nn, ':', ss, ':', am]),
+    );
     return {'status': 'success'};
   } catch (e) {
     return {'status': e.toString()};

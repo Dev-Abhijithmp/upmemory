@@ -19,8 +19,7 @@ class TextAndImageProvider extends ChangeNotifier {
         if (onData.path.contains('.aac')) memoryVoicePath.add(onData.path);
       }).onDone(() {
         memoryVoicePath = memoryVoicePath.reversed.toList();
-        notifyListeners();
-        print('memory voice path');
+
         print(memoryVoicePath);
       });
     });
@@ -69,7 +68,8 @@ class TextAndImageProvider extends ChangeNotifier {
   }
 
   Future<Map<String, String>> pickImageFromCamera() async {
-    final pickedFile = await _picker.pickImage(source: ImageSource.camera);
+    final pickedFile =
+        await _picker.pickImage(source: ImageSource.camera, imageQuality: 50);
     try {
       if (pickedFile != null) {
         final file = XFile(pickedFile.path);
@@ -84,7 +84,8 @@ class TextAndImageProvider extends ChangeNotifier {
   }
 
   Future<Map<String, String>> pickImageFromGallery() async {
-    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+    final pickedFile =
+        await _picker.pickImage(source: ImageSource.gallery, imageQuality: 50);
     try {
       if (pickedFile != null) {
         final file = XFile(pickedFile.path);
@@ -96,6 +97,11 @@ class TextAndImageProvider extends ChangeNotifier {
     } catch (e) {
       return {'error': e.toString()};
     }
+  }
+
+  void removeImages() {
+    images.clear();
+    notifyListeners();
   }
 
   Future<Map<String, String>> addText() async {

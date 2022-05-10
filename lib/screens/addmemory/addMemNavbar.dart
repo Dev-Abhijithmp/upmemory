@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:date_format/date_format.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:upmemory/functions/updateData.dart';
 import 'package:upmemory/functions/uploadData.dart';
@@ -34,6 +35,8 @@ class MemNavBar extends StatefulWidget {
 
 class _MemNavBarState extends State<MemNavBar> {
   List<Widget> pages = [AddText(), RecorderHomeView(), AddImage()];
+  List<String> records = [];
+  late Directory appDirectory;
   int _selectedIndex = 0;
   bool _isLoading = false;
   @override
@@ -70,6 +73,17 @@ class _MemNavBarState extends State<MemNavBar> {
               height: 60,
               selectedIndex: _selectedIndex,
               onDestinationSelected: (int index) {
+                records = [];
+                getApplicationDocumentsDirectory().then((value) {
+                  appDirectory = value;
+                  appDirectory.list().listen((onData) {
+                    if (onData.path.contains('.aac')) records.add(onData.path);
+                  }).onDone(() {
+                    records = records.reversed.toList();
+                    setState(() {});
+                  });
+                  setState(() {});
+                });
                 setState(() {
                   _selectedIndex = index;
                 });
@@ -115,7 +129,7 @@ class _MemNavBarState extends State<MemNavBar> {
                           height: 20,
                           child: Consumer<TextAndImageProvider>(
                             builder: (context, value, child) => Text(
-                              "${value.memoryVoicePath.length}",
+                              "${records.length}",
                               style:
                                   TextStyle(color: ColorsS.loginGradientStart),
                             ),

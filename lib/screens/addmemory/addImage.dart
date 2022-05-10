@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:upmemory/screens/addmemory/textandImageProvider.dart';
+import 'package:upmemory/themeColorIcons/theme.dart';
 
 class AddImage extends StatelessWidget {
   const AddImage({Key? key}) : super(key: key);
@@ -41,16 +42,25 @@ class AddImage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               ElevatedButton(
+                  style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.resolveWith(
+                          (states) => ColorsS.loginGradientEnd)),
                   onPressed: () async {
                     await provider.pickImageFromCamera();
                   },
                   child: Text('Camera')),
               ElevatedButton(
-                  onPressed: () async {
-                    await provider.pickImageFromCamera();
+                  style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.resolveWith(
+                          (states) => ColorsS.loginGradientEnd)),
+                  onPressed: () {
+                    provider.removeImages();
                   },
                   child: Text('remove')),
               ElevatedButton(
+                  style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.resolveWith(
+                          (states) => ColorsS.loginGradientEnd)),
                   onPressed: () async {
                     await provider.pickImageFromGallery();
                   },

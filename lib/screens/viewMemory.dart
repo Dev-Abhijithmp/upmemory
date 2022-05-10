@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:upmemory/screens/addmemory/voicerecord/recoredlist.dart';
@@ -14,6 +16,8 @@ class ViewMemory extends StatelessWidget {
     List<dynamic> text = doc.get('memoryText');
     List<dynamic> images = doc.get('memoryImages');
     List<dynamic> voices = doc.get('memoryVoice');
+    bool isUpdated = doc.get('isUpdated') as bool;
+    var updatetime = doc.get('memoryDateupdated');
     return Scaffold(
       appBar: AppBar(
         flexibleSpace: Container(
@@ -34,6 +38,15 @@ class ViewMemory extends StatelessWidget {
       ),
       body: Column(
         children: [
+          isUpdated
+              ? Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Text(
+                    "last updated time  " + updatetime,
+                    style: TextStyle(fontSize: 16),
+                  ),
+                )
+              : SizedBox(),
           Expanded(
               child: ListView.builder(
             itemBuilder: (BuildContext context, int index) {

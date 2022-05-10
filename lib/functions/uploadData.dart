@@ -31,6 +31,8 @@ Future<Map<String, String>> uploadMemory(
       'memoryVoice': voiceurls,
       'memoryImages': imageurls,
       'memoryDate': Timestamp.now(),
+      'memoryDateupdated': formatDate(DateTime.now(),
+          [dd, '-', mm, '-', yyyy, '  time -  ', hh, ':', nn, ':', ss]),
       'isUpdated': false,
     });
     Provider.of<TextAndImageProvider>(context, listen: false).changeLoading();

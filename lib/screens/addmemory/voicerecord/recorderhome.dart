@@ -24,12 +24,12 @@ class _RecorderHomeViewState extends State<RecorderHomeView> {
     super.initState();
     getApplicationDocumentsDirectory().then((value) {
       appDirectory = value;
-      // appDirectory.list().listen((onData) {
-      //   if (onData.path.contains('.aac')) records.add(onData.path);
-      // }).onDone(() {
-      //   records = records.reversed.toList();
-      //   setState(() {});
-      // });
+      appDirectory.list().listen((onData) {
+        if (onData.path.contains('.aac')) records.add(onData.path);
+      }).onDone(() {
+        records = records.reversed.toList();
+        setState(() {});
+      });
       setState(() {});
     });
   }
