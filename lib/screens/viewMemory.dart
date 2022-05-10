@@ -45,30 +45,28 @@ class ViewMemory extends StatelessWidget {
             },
             itemCount: text.length,
           )),
-          Expanded(
-            child: Container(
-              height: _screensize.height * 0.4,
-              margin: EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                border: Border.all(
-                  color: Colors.black,
-                  width: 2,
-                ),
+          Container(
+            height: _screensize.height * 0.5,
+            margin: EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(
+                color: Colors.black,
+                width: 2,
               ),
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemBuilder: (context, index) {
-                  return Container(
-                    margin: EdgeInsets.all(10),
-                    child: Image.network(
-                      images[index],
-                      fit: BoxFit.fill,
-                    ),
-                  );
-                },
-                itemCount: images.length,
-              ),
+            ),
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemBuilder: (context, index) {
+                return Container(
+                  margin: EdgeInsets.symmetric(vertical: 15, horizontal: 30),
+                  child: Image.network(
+                    images[index],
+                    fit: BoxFit.fill,
+                  ),
+                );
+              },
+              itemCount: images.length,
             ),
           ),
           Expanded(

@@ -33,13 +33,20 @@ Future<Map<String, String>> updatememory(
         .collection('memories')
         .doc('memories')
         .collection(uid)
-        .doc(formatDate(DateTime.now(), [dd, '-', mm, '-', yyyy]).toString())
+        .doc(formatDate(DateTime.now(), [
+          dd,
+          '-',
+          mm,
+          '-',
+          yyyy,
+        ]).toString())
         .update({
       'memoryText': textdatas + text,
       'memoryVoice': voiceurlss + vdata['status']!,
       'memoryImages': imageurlss + data['status']!,
-      'memoryDateupdated': Timestamp.now(),
-      'isUpdated':true,
+      'memoryDateupdated': formatDate(DateTime.now(),
+          [dd, '-', mm, '-', yyyy, '- time', hh, ':', nn, ':', ss]),
+      'isUpdated': true,
     });
     Provider.of<TextAndImageProvider>(context, listen: false).changeLoading();
     Provider.of<TextAndImageProvider>(context, listen: false)

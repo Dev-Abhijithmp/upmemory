@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:date_format/date_format.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:upmemory/functions/updateData.dart';
 import 'package:upmemory/functions/uploadData.dart';
@@ -11,6 +10,7 @@ import 'package:upmemory/screens/addmemory/addImage.dart';
 import 'package:upmemory/screens/addmemory/addText.dart';
 import 'package:upmemory/screens/addmemory/textandImageProvider.dart';
 import 'package:upmemory/screens/addmemory/voicerecord/recorderhome.dart';
+import 'package:upmemory/screens/widgets.dart';
 import 'package:upmemory/themeColorIcons/colors.dart';
 import 'package:upmemory/themeColorIcons/iconss.dart';
 import 'package:upmemory/themeColorIcons/theme.dart';
@@ -35,6 +35,7 @@ class MemNavBar extends StatefulWidget {
 class _MemNavBarState extends State<MemNavBar> {
   List<Widget> pages = [AddText(), RecorderHomeView(), AddImage()];
   int _selectedIndex = 0;
+  bool _isLoading = false;
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
@@ -103,9 +104,26 @@ class _MemNavBarState extends State<MemNavBar> {
                     //   MyFlutterApp.keyboard_voice,
                     //   color: ColorsS.loginGradientEnd,
                     // ),
-                    icon: Icon(
-                      MyFlutterApp.keyboard_voice,
-                      size: 25,
+                    icon: Stack(
+                      children: [
+                        Icon(
+                          MyFlutterApp.keyboard_voice,
+                          size: 25,
+                        ),
+                        Positioned(
+                          width: 20,
+                          height: 20,
+                          child: Consumer<TextAndImageProvider>(
+                            builder: (context, value, child) => Text(
+                              "${value.memoryVoicePath.length}",
+                              style:
+                                  TextStyle(color: ColorsS.loginGradientStart),
+                            ),
+                          ),
+                          top: -2,
+                          right: -5,
+                        ),
+                      ],
                     ),
                     label: "Voice"),
                 NavigationDestination(
@@ -138,9 +156,12 @@ class _MemNavBarState extends State<MemNavBar> {
               ],
             ),
           ),
-          floatingActionButton: provider.loading == false
+          floatingActionButton: _isLoading == false
               ? InkWell(
                   onTap: () async {
+                    setState(() {
+                      _isLoading = true;
+                    });
                     List<File> file = await provider.getVoiceFiles();
                     Map<String, String> flag;
                     if (widget.buttonText == 'upload') {
@@ -153,6 +174,7 @@ class _MemNavBarState extends State<MemNavBar> {
                           context);
                     } else {
                       List<File> file = await provider.getVoiceFiles();
+
                       flag = await updatememory(
                           imageurls: widget.images,
                           voiceurls: widget.audios,
@@ -167,20 +189,10 @@ class _MemNavBarState extends State<MemNavBar> {
                           voice: file,
                           context: context);
                     }
+                    setState(() {
+                      _isLoading = false;
+                    });
 
-                    // Map<String, String> flag =  widget.buttonText=='upload'?  await uploadMemory(
-                    //     FirebaseAuth.instance.currentUser!.uid,
-                    //     formatDate(DateTime.now(), [dd, '-', mm, '-', yyyy]),
-                    //     provider.memoryText,
-                    //     provider.images,
-                    //     await provider.getVoiceFiles(),
-                    //     context):updatememory(
-                    //     FirebaseAuth.instance.currentUser!.uid,
-                    //     formatDate(DateTime.now(), [dd, '-', mm, '-', yyyy]),
-                    //     provider.memoryText,
-                    //     provider.images,
-                    //     await provider.getVoiceFiles(),
-                    //     context)
                     if (flag['status'] == "success") {
                       Provider.of<TextAndImageProvider>(context, listen: false)
                           .deleteall(provider.getpaths());

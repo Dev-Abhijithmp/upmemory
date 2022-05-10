@@ -14,7 +14,7 @@ class AddImage extends StatelessWidget {
       body: Column(
         children: [
           Container(
-            height: _screensize.height * 0.4,
+            height: _screensize.height * 0.6,
             margin: EdgeInsets.all(10),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
@@ -45,6 +45,11 @@ class AddImage extends StatelessWidget {
                     await provider.pickImageFromCamera();
                   },
                   child: Text('Camera')),
+              ElevatedButton(
+                  onPressed: () async {
+                    await provider.pickImageFromCamera();
+                  },
+                  child: Text('remove')),
               ElevatedButton(
                   onPressed: () async {
                     await provider.pickImageFromGallery();

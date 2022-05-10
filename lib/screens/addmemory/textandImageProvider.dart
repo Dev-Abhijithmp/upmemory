@@ -12,6 +12,8 @@ class TextAndImageProvider extends ChangeNotifier {
   List<String> memoryVoicePath = [];
 
   List<String> getpaths() {
+    memoryVoicePath = [];
+    notifyListeners();
     getApplicationDocumentsDirectory().then((value) {
       value.list().listen((onData) {
         if (onData.path.contains('.aac')) memoryVoicePath.add(onData.path);
@@ -63,6 +65,7 @@ class TextAndImageProvider extends ChangeNotifier {
       }
     }
     memoryVoicePath.clear();
+    notifyListeners();
   }
 
   Future<Map<String, String>> pickImageFromCamera() async {

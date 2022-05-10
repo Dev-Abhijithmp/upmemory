@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:upmemory/screens/addmemory/textandImageProvider.dart';
+import 'package:upmemory/themeColorIcons/theme.dart';
 
 class AddText extends StatelessWidget {
   const AddText({Key? key}) : super(key: key);
@@ -32,13 +33,26 @@ class AddText extends StatelessWidget {
           ElevatedButton(
             style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.resolveWith(
-                    (states) => Colors.blue.shade600)),
+                    (states) => ColorsS.loginGradientEnd)),
             onPressed: () {
               provider.addText();
               provider.textEditingController.clear();
             },
-            child: Text('Add to buffer'),
+            child: Text('save'),
           ),
+          Expanded(
+              child: ListView.builder(
+            itemBuilder: (BuildContext context, int index) {
+              return Container(
+                margin: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                child: Text(
+                  provider.memoryText[index],
+                  style: TextStyle(fontSize: 15),
+                ),
+              );
+            },
+            itemCount: provider.memoryText.length,
+          ))
         ],
       ),
     );
