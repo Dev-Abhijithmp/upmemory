@@ -11,7 +11,6 @@ import 'package:upmemory/screens/addmemory/addImage.dart';
 import 'package:upmemory/screens/addmemory/addText.dart';
 import 'package:upmemory/screens/addmemory/textandImageProvider.dart';
 import 'package:upmemory/screens/addmemory/voicerecord/recorderhome.dart';
-import 'package:upmemory/screens/widgets.dart';
 import 'package:upmemory/themeColorIcons/colors.dart';
 import 'package:upmemory/themeColorIcons/iconss.dart';
 import 'package:upmemory/themeColorIcons/theme.dart';
