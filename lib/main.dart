@@ -44,7 +44,7 @@ class MyApp extends StatelessWidget {
 }
 
 Future<bool> initialize() async {
-  await Future.delayed(Duration(seconds: 4));
+  await Future.delayed(Duration(seconds: 2));
   await Firebase.initializeApp();
   return true;
 }

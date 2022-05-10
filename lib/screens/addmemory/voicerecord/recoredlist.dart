@@ -4,10 +4,12 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 
 class RecordListView extends StatefulWidget {
-  final List<String> records;
+  final List<dynamic> records;
+  final bool isNetwork;
   const RecordListView({
     Key? key,
     required this.records,
+    required this.isNetwork,
   }) : super(key: key);
 
   @override
@@ -32,8 +34,10 @@ class _RecordListViewState extends State<RecordListView> {
             itemBuilder: (BuildContext context, int i) {
               return ExpansionTile(
                 title: Text('New recoding ${widget.records.length - i}'),
-                subtitle: Text(_getDateFromFilePatah(
-                    filePath: widget.records.elementAt(i))),
+                subtitle: widget.isNetwork
+                    ? Text('')
+                    : Text(_getDateFromFilePatah(
+                        filePath: widget.records.elementAt(i))),
                 onExpansionChanged: ((newState) {
                   if (newState) {
                     setState(() {
@@ -55,26 +59,43 @@ class _RecordListViewState extends State<RecordListView> {
                               AlwaysStoppedAnimation<Color>(Colors.green),
                           value: _selectedIndex == i ? _completedPercentage : 0,
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            IconButton(
-                              icon: _selectedIndex == i
-                                  ? _isPlaying
-                                      ? Icon(Icons.pause)
-                                      : Icon(Icons.play_arrow)
-                                  : Icon(Icons.play_arrow),
-                              onPressed: () => _onPlay(
-                                  filePath: widget.records.elementAt(i),
-                                  index: i),
-                            ),
-                            IconButton(
-                                icon: Icon(Icons.delete),
-                                onPressed: () {
-                                  delete(widget.records[i]);
-                                }),
-                          ],
-                        ),
+                        widget.isNetwork == false
+                            ? Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  IconButton(
+                                    icon: _selectedIndex == i
+                                        ? _isPlaying
+                                            ? Icon(Icons.pause)
+                                            : Icon(Icons.play_arrow)
+                                        : Icon(Icons.play_arrow),
+                                    onPressed: () => _onPlay(
+                                        filePath: widget.records
+                                            .elementAt(i)
+                                            .toString(),
+                                        index: i,
+                                        isNetwork: widget.isNetwork),
+                                  ),
+                                  IconButton(
+                                      icon: Icon(Icons.delete),
+                                      onPressed: () {
+                                        delete(widget.records[i].toString());
+                                      }),
+                                ],
+                              )
+                            : IconButton(
+                                icon: _selectedIndex == i
+                                    ? _isPlaying
+                                        ? Icon(Icons.pause)
+                                        : Icon(Icons.play_arrow)
+                                    : Icon(Icons.play_arrow),
+                                onPressed: () => _onPlay(
+                                    filePath:
+                                        widget.records.elementAt(i).toString(),
+                                    index: i,
+                                    isNetwork: widget.isNetwork),
+                              ),
                       ],
                     ),
                   ),
@@ -84,11 +105,19 @@ class _RecordListViewState extends State<RecordListView> {
           );
   }
 
-  Future<void> _onPlay({required String filePath, required int index}) async {
+  Future<void> _onPlay(
+      {required String filePath,
+      required int index,
+      required bool isNetwork}) async {
     AudioPlayer audioPlayer = AudioPlayer();
 
     if (!_isPlaying) {
-      audioPlayer.play(filePath, isLocal: true);
+      if (isNetwork) {
+        audioPlayer.play(filePath, isLocal: false);
+      } else {
+        audioPlayer.play(filePath, isLocal: true);
+      }
+
       setState(() {
         _selectedIndex = index;
         _completedPercentage = 0.0;
@@ -117,9 +146,9 @@ class _RecordListViewState extends State<RecordListView> {
     }
   }
 
-  Future<void> delete(String path) async{
+  Future<void> delete(String path) async {
     File file = File(path);
-   await file.delete();
+    await file.delete();
     widget.records.remove(path);
     setState(() {});
   }

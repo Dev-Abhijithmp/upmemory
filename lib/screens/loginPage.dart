@@ -33,6 +33,7 @@ class _LoginPageState extends State<LoginPage>
   bool _obscureTextLogin = true;
   bool _obscureTextSignup = true;
   bool _obscureTextSignupConfirm = true;
+  bool _isloading = false;
 
   TextEditingController signupEmailController = new TextEditingController();
   TextEditingController signupNameController = new TextEditingController();
@@ -291,50 +292,67 @@ class _LoginPageState extends State<LoginPage>
               ],
             ),
           ),
-          InkWell(
-            splashColor: Colors.white,
-            highlightColor: Colors.transparent,
-            onTap: () async {
-              if (loginEmailController.text == "" ||
-                  loginPasswordController == "") {
-                errorAlert(
-                    error: "Enter email and password",
-                    title: "Error",
-                    context: context);
-              } else {
-                signinemail(loginEmailController.text.trim(),
-                    loginPasswordController.text);
-              }
-            },
-            child: Container(
-              margin: EdgeInsets.only(top: 50),
-              child: Container(
-                width: 200,
-                height: 40,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(30),
-                  gradient: new LinearGradient(
-                      colors: [
-                        ColorsS.loginGradientEnd,
-                        ColorsS.loginGradientStart
-                      ],
-                      begin: const FractionalOffset(0.2, 0.2),
-                      end: const FractionalOffset(1.0, 1.0),
-                      stops: [0.0, 1.0],
-                      tileMode: TileMode.clamp),
-                ),
-                child: Center(
-                  child: Text(
-                    "LOGIN",
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 25.0,
-                        fontFamily: "WorkSansBold"),
+          _isloading == false
+              ? InkWell(
+                  splashColor: Colors.white,
+                  highlightColor: Colors.transparent,
+                  onTap: () async {
+                    setState(() {
+                      _isloading = true;
+                    });
+                    if (loginEmailController.text == "" ||
+                        loginPasswordController == "") {
+                      errorAlert(
+                          error: "Enter email and password",
+                          title: "Error",
+                          context: context);
+                    } else {
+                      Map<String, String?> flag = await signinemail(
+                          loginEmailController.text.trim(),
+                          loginPasswordController.text);
+                      if (flag['status'] != 'success') {
+                        errorAlert(
+                            error: flag['status']!,
+                            title: "Error",
+                            context: context);
+                      }
+                      setState(() {
+                        _isloading = false;
+                      });
+                    }
+                  },
+                  child: Container(
+                    margin: EdgeInsets.only(top: 50),
+                    child: Container(
+                      width: 200,
+                      height: 40,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(30),
+                        gradient: new LinearGradient(
+                            colors: [
+                              ColorsS.loginGradientEnd,
+                              ColorsS.loginGradientStart
+                            ],
+                            begin: const FractionalOffset(0.2, 0.2),
+                            end: const FractionalOffset(1.0, 1.0),
+                            stops: [0.0, 1.0],
+                            tileMode: TileMode.clamp),
+                      ),
+                      child: Center(
+                        child: Text(
+                          "LOGIN",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 25.0,
+                              fontFamily: "WorkSansBold"),
+                        ),
+                      ),
+                    ),
                   ),
+                )
+              : CircularProgressIndicator(
+                  color: ColorsS.loginGradientEnd,
                 ),
-              ),
-            ),
-          ),
           Padding(
             padding: EdgeInsets.only(top: 30.0),
             child: FlatButton(
@@ -504,69 +522,81 @@ class _LoginPageState extends State<LoginPage>
                 ),
               ),
               Container(
-                margin: EdgeInsets.only(top: 340.0),
-                decoration: new BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(30)),
-                  boxShadow: <BoxShadow>[
-                    BoxShadow(
-                      color: ColorsS.loginGradientStart,
-                      offset: Offset(1.0, 6.0),
-                      blurRadius: 20.0,
-                    ),
-                    BoxShadow(
-                      color: ColorsS.loginGradientEnd,
-                      offset: Offset(1.0, 6.0),
-                      blurRadius: 20.0,
-                    ),
-                  ],
-                  gradient: new LinearGradient(
-                      colors: [
-                        ColorsS.loginGradientEnd,
-                        ColorsS.loginGradientStart
-                      ],
-                      begin: const FractionalOffset(0.2, 0.2),
-                      end: const FractionalOffset(1.0, 1.0),
-                      stops: [0.0, 1.0],
-                      tileMode: TileMode.clamp),
-                ),
-                child: InkWell(
-                    highlightColor: Colors.transparent,
-                    splashColor: ColorsS.loginGradientEnd,
-                    //shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(5.0))),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 10.0, horizontal: 42.0),
-                      child: Text(
-                        "SIGN UP",
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 25.0,
-                            fontFamily: "WorkSansBold"),
+                  margin: EdgeInsets.only(top: 340.0),
+                  decoration: new BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(30)),
+                    boxShadow: <BoxShadow>[
+                      BoxShadow(
+                        color: ColorsS.loginGradientStart,
+                        offset: Offset(1.0, 6.0),
+                        blurRadius: 20.0,
                       ),
-                    ),
-                    onTap: () async {
-                      if (signupPasswordController.text !=
-                          signupConfirmPasswordController.text) {
-                        errorAlert(
-                            error: "password didn't match",
-                            title: "Error!",
-                            context: context);
-                      } else if (signupConfirmPasswordController.text != " " &&
-                          signupConfirmPasswordController.text != "" &&
-                          signupNameController.text != "" &&
-                          signupEmailController.text != "") {
-                        await register(
-                            email: signupEmailController.text.trim(),
-                            password: signupConfirmPasswordController.text,
-                            name: signupNameController.text);
-                      } else {
-                        errorAlert(
-                            error: "please fill all the fields",
-                            title: "Error !",
-                            context: context);
-                      }
-                    }),
-              ),
+                      BoxShadow(
+                        color: ColorsS.loginGradientEnd,
+                        offset: Offset(1.0, 6.0),
+                        blurRadius: 20.0,
+                      ),
+                    ],
+                    gradient: new LinearGradient(
+                        colors: [
+                          ColorsS.loginGradientEnd,
+                          ColorsS.loginGradientStart
+                        ],
+                        begin: const FractionalOffset(0.2, 0.2),
+                        end: const FractionalOffset(1.0, 1.0),
+                        stops: [0.0, 1.0],
+                        tileMode: TileMode.clamp),
+                  ),
+                  child: _isloading == false
+                      ? InkWell(
+                          highlightColor: Colors.transparent,
+                          splashColor: ColorsS.loginGradientEnd,
+                          //shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(5.0))),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 10.0, horizontal: 42.0),
+                            child: Text(
+                              "SIGN UP",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 25.0,
+                                  fontFamily: "WorkSansBold"),
+                            ),
+                          ),
+                          onTap: () async {
+                            if (signupPasswordController.text !=
+                                signupConfirmPasswordController.text) {
+                              errorAlert(
+                                  error: "password didn't match",
+                                  title: "Error!",
+                                  context: context);
+                            } else if (signupConfirmPasswordController.text !=
+                                    " " ||
+                                signupConfirmPasswordController.text != "" ||
+                                signupNameController.text != "" ||
+                                signupEmailController.text != "") {
+                              Map<String, String?> flag = await register(
+                                  email: signupEmailController.text.trim(),
+                                  password:
+                                      signupConfirmPasswordController.text,
+                                  name: signupNameController.text);
+                              print(flag['status']);
+                              if (flag['status'] != 'success') {
+                                errorAlert(
+                                    error: flag['status']!,
+                                    title: 'Error',
+                                    context: context);
+                              }
+                            } else {
+                              errorAlert(
+                                  error: "please fill all the fields",
+                                  title: "Error !",
+                                  context: context);
+                            }
+                          })
+                      : CircularProgressIndicator(
+                          color: ColorsS.loginGradientEnd,
+                        )),
             ],
           ),
         ],

@@ -73,9 +73,14 @@ class MemoryItem extends StatelessWidget {
                 ),
                 NeumorphicButton(
                   onPressed: () async {
-                    var flag = await removememory(
+                    Map<String, String?> flag = await removememory(
                         FirebaseAuth.instance.currentUser!.uid, doc!.id);
-                    print(flag);
+                    if (flag['status'] != 'success') {
+                      errorAlert(
+                          error: flag['status']!,
+                          title: "Error",
+                          context: context);
+                    }
                   },
                   child: Text("Remove"),
                 ),

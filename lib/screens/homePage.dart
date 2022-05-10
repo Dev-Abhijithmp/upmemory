@@ -1,10 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
+import 'package:upmemory/authentication/authenticate.dart';
 import 'package:upmemory/functions/checkExistance.dart';
 import 'package:upmemory/screens/Loadingpage.dart';
 import 'package:upmemory/screens/addmemory/addMemNavbar.dart';
-import 'package:upmemory/screens/drawer.dart';
 import 'package:upmemory/screens/widgets.dart';
 import 'package:upmemory/themeColorIcons/colors.dart';
 import 'package:upmemory/themeColorIcons/theme.dart';
@@ -32,9 +32,22 @@ class Homepage extends StatelessWidget {
           "Memories",
           style: TextStyle(color: foregroundColor),
         ),
-        actions: [],
+        actions: [
+          TextButton.icon(
+              onPressed: () {
+                signout();
+              },
+              icon: Icon(
+                Icons.logout,
+                color: Colors.white,
+              ),
+              label: Text(
+                "logout",
+                style: TextStyle(color: Colors.white),
+              ))
+        ],
       ),
-      drawer: drawer(),
+      // drawer: drawer(),
       backgroundColor: Colors.white,
       body: StreamBuilder(
           stream: FirebaseFirestore.instance

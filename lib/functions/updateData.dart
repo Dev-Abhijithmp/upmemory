@@ -8,9 +8,9 @@ import 'package:provider/provider.dart';
 import 'package:upmemory/screens/addmemory/textandImageProvider.dart';
 
 Future<Map<String, String>> updatememory(
-    {required List<String> imageurls,
-    required List<String> voiceurls,
-    required List<String> textdata,
+    {required List<dynamic> imageurls,
+    required List<dynamic> voiceurls,
+    required List<dynamic> textdata,
     required int imageindex,
     required int voiceindex,
     required String uid,
@@ -25,19 +25,21 @@ Future<Map<String, String>> updatememory(
         id: uid, images: images, imageindex: imageindex);
     Map<String, List<String>> vdata =
         await addVoicetostorage(voiceindex: voiceindex, uid: uid, voice: voice);
-    List<String>? voiceurls = vdata['status'];
+    List<String>? voiceurlss = List<String>.from(voiceurls);
+    List<String>? textdatas = List<String>.from(textdata);
 
-    List<String>? imageurls = data['status'];
+    List<String>? imageurlss = List<String>.from(imageurls);
     await FirebaseFirestore.instance
         .collection('memories')
         .doc('memories')
         .collection(uid)
         .doc(formatDate(DateTime.now(), [dd, '-', mm, '-', yyyy]).toString())
         .update({
-      'memoryText': text,
-      'memoryVoice': voiceurls,
-      'memoryImages': imageurls,
-      'memoryDate': Timestamp.now()
+      'memoryText': textdatas + text,
+      'memoryVoice': voiceurlss + vdata['status']!,
+      'memoryImages': imageurlss + data['status']!,
+      'memoryDateupdated': Timestamp.now(),
+      'isUpdated':true,
     });
     Provider.of<TextAndImageProvider>(context, listen: false).changeLoading();
     Provider.of<TextAndImageProvider>(context, listen: false)

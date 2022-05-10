@@ -16,9 +16,9 @@ import 'package:upmemory/themeColorIcons/iconss.dart';
 import 'package:upmemory/themeColorIcons/theme.dart';
 
 class MemNavBar extends StatefulWidget {
-  final List<String> memorytext;
-  final List<String> images;
-  final List<String> audios;
+  final List<dynamic> memorytext;
+  final List<dynamic> images;
+  final List<dynamic> audios;
   final String buttonText;
   MemNavBar(
       {Key? key,
@@ -217,5 +217,3 @@ class _MemNavBarState extends State<MemNavBar> {
     );
   }
 }
-
-

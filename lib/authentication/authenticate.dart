@@ -29,7 +29,7 @@ Future<Map<String, String?>> register(
     UserCredential userCredential = await auth.createUserWithEmailAndPassword(
         email: email, password: password);
 
-    createuserprofile(uid: userCredential.user!.uid, name: name, email: email);
+    await createuserprofile(uid: userCredential.user!.uid, name: name, email: email);
     return {"status": "success"};
   } on FirebaseAuthException catch (e) {
     print(e.toString());

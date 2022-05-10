@@ -49,6 +49,7 @@ class _RecorderHomeViewState extends State<RecorderHomeView> {
             flex: 2,
             child: RecordListView(
               records: records,
+              isNetwork: false,
             ),
           ),
           Expanded(
