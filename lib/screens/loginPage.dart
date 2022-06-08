@@ -377,8 +377,8 @@ class _LoginPageState extends State<LoginPage>
       child: Column(
         children: <Widget>[
           Stack(
+            clipBehavior: Clip.hardEdge,
             alignment: Alignment.topCenter,
-            overflow: Overflow.visible,
             children: <Widget>[
               Container(
                 width: 300.0,
